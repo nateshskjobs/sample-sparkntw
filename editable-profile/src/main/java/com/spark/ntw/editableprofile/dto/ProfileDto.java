@@ -1,40 +1,21 @@
 /**
-*
+ * 
  */
-
-package com.spark.ntw.editableprofile.domain;
+package com.spark.ntw.editableprofile.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 /**
- * Entity class for the Profile.
- * 
- * @author Natesh Kurup
- *         <p/>
- *         Created Date: Nov 20, 2018
+ * @author nkurup
  *
+ * Nov 21, 2018
  */
-@Entity
-@Table(
-        name = "m_profile")
-@Data
-@EqualsAndHashCode(callSuper=false)
-public class Profile extends BaseEntity implements Serializable {
-    /**
+public class ProfileDto implements Serializable{
+	/**
      * Display Name.
      */
     private String displayName;
-    /**
-     * Real Name.
-     */
-    private String realName;
     /**
      * Date Of Birth.
      */
@@ -59,14 +40,6 @@ public class Profile extends BaseEntity implements Serializable {
      * Picture.
      */
     private byte[] picture;
-    /**
-     * Martial Status.
-     */
-    private String maritialStatus; // TODO: convert to enum.
-    /**
-     * Occupation.
-     */
-    private String occupation;
     /**
      * About Me.
      */
