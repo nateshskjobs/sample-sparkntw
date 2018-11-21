@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -58,6 +59,7 @@ public class Profile extends BaseEntity implements Serializable {
     /**
      * Picture.
      */
+    @Lob
     private byte[] picture;
     /**
      * Martial Status.
