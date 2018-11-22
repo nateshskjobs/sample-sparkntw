@@ -33,6 +33,7 @@ public class ProfileServiceImpl implements ProfileService {
 	@Transactional(readOnly=true)
 	public List<ListProfileDto> getAllProfiles() {
 		// TODO Auto-generated method 
+	    System.out.println("Inside getAllProfiles");
 		return null;
 	}
 
