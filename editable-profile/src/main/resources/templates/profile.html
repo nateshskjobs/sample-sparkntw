@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<script>
+/*<![CDATA[*/
+function cancel()
+{
+	 var theUrl="/profile-api/profiles-list";	
+	location.href=theUrl;
+}
+
+
+/*]]>*/
+</script>
+
+<form action="/profile-api/profiles" method="post" th:object="${profile}">
+	<!-- Display Errors -->
+	<ul th:if="${#fields.hasErrors('*')}">
+	  <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+	</ul>
+	<input type="hidden" id="id" th:field="*{id}"/>
+	<table>
+		<!-- Display Name -->
+		<tr>
+			<td>Name =</td>
+			<td><input type="text" name="displayName"
+				th:field="*{displayName}" /></td>
+		</tr>
+
+		<!-- Real Name -->
+		<tr>
+			<td>Name =</td>
+			<td><input type="text" name="realName"
+				th:field="*{realName}" /></td>
+		</tr>
+
+		<!-- DOB -->
+		<tr>
+			<td>DOB =</td>
+			<td><input type="text" name="dateOfBirth"
+				th:field="*{dateOfBirth}" /></td>
+		</tr>
+
+		<!-- Gender -->
+		<tr>
+			<td>Gender =</td>
+			<td th:each="row: ${genderValues}"><input type="radio"
+				th:field="*{gender}" th:value="${row.key}" name="gender" />
+				<label th:for="${#ids.prev('gender')}" th:text="${row.value}" /></td>
+		</tr>
+
+		<!-- Ethinicity -->
+		<tr>
+			<td>Ethinicity =</td>
+			<td><input type="text" name="ethinicity"
+				th:field="*{ethinicity}" /></td>
+		</tr>
+
+		<!-- Religion -->
+		<tr>
+			<td>Religion =</td>
+			<td><input type="text" name="religion"
+				th:field="*{religion}" /></td>
+		</tr>
+
+		<!-- Height -->
+		<tr>
+			<td>Height =</td>
+			<td><input type="text" name="height"
+				th:field="*{height}" /></td>
+		</tr>
+
+		<!-- Picture -->
+		<!-- TODO -->
+
+		<!-- Occupation. -->
+		<tr>
+			<td>Occupation =</td>
+			<td><input type="text" name="occupation"
+				th:field="*{occupation}" /></td>
+		</tr>
+
+		<!-- About Me -->
+		<tr>
+			<td>About Me =</td>
+			<td><input type="text" name="aboutMe"
+				th:field="*{aboutMe}" /></td>
+		</tr>
+		
+		<!-- location -->
+		<tr>
+			<td>Location =</td>
+			<td><input type="text" name="location"
+				th:field="*{location}" /></td>
+		</tr>
+		
+		<tr>
+			<td colspan="2">
+			<input  type="submit" th:value="Submit"/>
+			<input  type="button" th:value="Cancel" onclick="cancel()"/>
+			</td>
+		</tr>
+	</table>
+</form>
+</html>

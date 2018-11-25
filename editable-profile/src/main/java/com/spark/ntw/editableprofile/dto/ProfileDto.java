@@ -6,16 +6,31 @@ package com.spark.ntw.editableprofile.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import com.spark.ntw.editableprofile.validation.ProfileValidation;
+
+import lombok.Data;
+
 /**
  * @author nkurup
  *
  * Nov 21, 2018
  */
+@Data
+@ProfileValidation
 public class ProfileDto implements Serializable{
+    /**
+     * Id.
+     */
+    private long id;
 	/**
      * Display Name.
      */
     private String displayName;
+    
+    /**
+     * Real Name.
+     */
+    private String realName;
     /**
      * Date Of Birth.
      */
@@ -40,6 +55,11 @@ public class ProfileDto implements Serializable{
      * Picture.
      */
     private byte[] picture;
+    
+    /**
+     * Occupation
+     */
+    private String occupation;
     /**
      * About Me.
      */
