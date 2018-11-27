@@ -9,6 +9,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Matchers.any;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +29,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.util.reflection.Whitebox;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.spark.ntw.editableprofile.domain.Profile;
@@ -44,6 +48,8 @@ import com.spark.ntw.editableprofile.service.impl.ProfileServiceImpl;
  */
 @SpringBootTest
 public class ProfileServiceTest {
+    private static final Logger log = LoggerFactory.getLogger(ProfileServiceTest.class);
+
     @InjectMocks
     ProfileService profileService = new ProfileServiceImpl();
 
@@ -104,12 +110,12 @@ public class ProfileServiceTest {
         profile.setDateOfBirth("11/11/2018");
         profile.setGender('M');
         profile.setAboutMe("Test About Me");
-        //profile.setEthinicity(EthinicityEnum.ASIAN.name());
-        //profile.setLocation(LocationEnum.MUMBAI.name());
-        //profile.setMaritialStatus(MaritialStatusEnum.SINGLE.name());
+        // profile.setEthinicity(EthinicityEnum.ASIAN.name());
+        // profile.setLocation(LocationEnum.MUMBAI.name());
+        // profile.setMaritialStatus(MaritialStatusEnum.SINGLE.name());
         profile.setOccupation("Occupation Test");
         profile.setRealName("Real Name");
-        //profile.setReligion(ReligionEnum.HINDU.name());
+        // profile.setReligion(ReligionEnum.HINDU.name());
         return profile;
     }
 
@@ -124,36 +130,52 @@ public class ProfileServiceTest {
     @Test
     public void testSaveProfile() {
         final ProfileDto dto = this.createProfileDto(103L);
-        //check the validations
-        Set<ConstraintViolation<ProfileDto>> exceptions=validator.validate(dto);
+        // check the validations
+        Set<ConstraintViolation<ProfileDto>> exceptions = validator.validate(dto);
         assertNotEquals(null, exceptions);
         Mockito.when(profileRepo.save(any(Profile.class))).thenReturn(this.createProfile(104L));
         final long id = profileService.saveProfile(dto);
         assertEquals(104L, id);
     }
-    
+
     @Test
-    public void testInvlaidSaveForInvalidHtml(){
-        final ProfileDto dto=this.createProfileDto(300L);
+    public void testInvlaidSaveForInvalidHtml() {
+        final ProfileDto dto = this.createProfileDto(300L);
         dto.setAboutMe("<html><script>alert('Hi')</script></html>");
-        Set<ConstraintViolation<ProfileDto>> exceptions=validator.validate(dto);
+        Set<ConstraintViolation<ProfileDto>> exceptions = validator.validate(dto);
         assertNotEquals(null, exceptions);
     }
-    
+
     @Test
-    public void testInvlaidSaveForMandatoryValues(){
-        final ProfileDto dto=this.createProfileDto(300L);
+    public void testInvlaidSaveForMandatoryValues() {
+        final ProfileDto dto = this.createProfileDto(300L);
+        // Null Validation.
+        log.debug("Validating Display Name");
+        dto.setDisplayName(null);
+        log.debug("Validating Real Name");
+        dto.setRealName(null);
+        log.debug("Validating Maritial Status");
         dto.setMaritialStatus(null);
-        Set<ConstraintViolation<ProfileDto>> exceptions=validator.validate(dto);
+        log.debug("Validating Location");
+        dto.setLocation(null);
+        Set<ConstraintViolation<ProfileDto>> exceptions = validator.validate(dto);
         assertNotEquals(null, exceptions);
+        assertEquals(4,exceptions.size());
+        
+        log.debug("Validating DOB");
+        DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        dto.setDateOfBirth(LocalDate.now().plus(1, ChronoUnit.DAYS).format(formatter));
+        exceptions = validator.validate(dto);
+        assertNotEquals(null, exceptions);
+        assertEquals(5,exceptions.size());
     }
-    
+
     @Test
-    public void testGetProfileForView(){
+    public void testGetProfileForView() {
         final long id = 102L;
         Mockito.when(profileRepo.findOne(id)).thenReturn(this.createProfile(id));
         final ProfileViewDto dto = profileService.getProfileForView(id);
         assertNotEquals(null, dto);
-        
+
     }
 }

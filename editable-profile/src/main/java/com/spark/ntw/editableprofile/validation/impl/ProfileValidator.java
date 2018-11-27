@@ -4,6 +4,9 @@
 
 package com.spark.ntw.editableprofile.validation.impl;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -25,26 +28,21 @@ public class ProfileValidator implements ConstraintValidator<ProfileValidation, 
 
     @Override
     public void initialize(ProfileValidation arg0) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public boolean isValid(ProfileDto dto, ConstraintValidatorContext ctx) {
         boolean flag = true;
         ctx.disableDefaultConstraintViolation();
-        // Display Name
-        if (StringUtils.isEmpty(dto.getDisplayName()) || dto.getDisplayName().length() > 256) {
-            flag = false;
-            ctx.buildConstraintViolationWithTemplate("Incorrect Display Name")
-                    .addConstraintViolation();
-        }
-
-        if (null == dto.getDateOfBirth()) {
-            flag = false;
+       
+        if (StringUtils.isNotBlank(dto.getDateOfBirth())) {
+            final DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            final LocalDate dob=LocalDate.parse(dto.getDateOfBirth(),formatter);
+            flag=!(dob.isAfter(LocalDate.now()));
             ctx.buildConstraintViolationWithTemplate("Incorrect Date Of Birth")
                     .addConstraintViolation();
         }
+        
 
         return flag;
     }

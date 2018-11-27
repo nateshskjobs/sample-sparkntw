@@ -55,6 +55,7 @@ public class Profile extends BaseEntity implements Serializable {
     /**
      * Real Name.
      */
+    @NotNull
     @Column(
             name = "real_name")
     @Size(

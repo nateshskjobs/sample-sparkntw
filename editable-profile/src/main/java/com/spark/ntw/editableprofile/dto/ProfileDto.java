@@ -42,6 +42,7 @@ public class ProfileDto implements Serializable {
     /**
      * Real Name.
      */
+    @NotNull
     @Size(
             min = 1,
             max = 256)
