@@ -17,7 +17,7 @@ import lombok.Getter;
  *
  */
 @Getter
-public class ApplicationException extends RuntimeException {
+public final class ApplicationException extends RuntimeException {
 
     /**
      * Default Constructor.

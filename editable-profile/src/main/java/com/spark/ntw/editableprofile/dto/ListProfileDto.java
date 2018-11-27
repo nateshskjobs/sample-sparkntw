@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import lombok.Data;
 
 /**
+ * DTO for the Profile Listing Screen.
+ * 
  * @author nkurup
  *
  * @created_Date Nov 21, 2018

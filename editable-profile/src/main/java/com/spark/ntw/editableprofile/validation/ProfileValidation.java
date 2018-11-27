@@ -1,6 +1,7 @@
 /**
 *
  */
+
 package com.spark.ntw.editableprofile.validation;
 
 import static java.lang.annotation.ElementType.TYPE;
@@ -18,15 +19,30 @@ import com.spark.ntw.editableprofile.validation.impl.ProfileValidator;
 @Documented
 @Retention(RUNTIME)
 @Target(TYPE)
-@Constraint(validatedBy = ProfileValidator.class)
+@Constraint(
+        validatedBy = ProfileValidator.class)
 /**
+ * Annotation to enforce Validation on a bean.
+ * 
  * @author Natesh Kurup
-*  <p/>Created Date: Nov 25, 2018
+ *         <p/>
+ *         Created Date: Nov 25, 2018
  *
  */
 public @interface ProfileValidation {
+    /**
+     * @return
+     */
     String message() default "Invalid Data";
+
+    /**
+     * @return
+     */
     Class<?>[] groups() default {};
+
+    /**
+     * @return
+     */
     Class<? extends Payload>[] payload() default {};
 
 }

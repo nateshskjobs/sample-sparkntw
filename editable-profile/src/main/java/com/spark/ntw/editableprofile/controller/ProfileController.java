@@ -4,10 +4,7 @@
 
 package com.spark.ntw.editableprofile.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -25,8 +22,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.spark.ntw.editableprofile.domain.Profile;
 import com.spark.ntw.editableprofile.dto.ListProfileDto;
 import com.spark.ntw.editableprofile.dto.ProfileDto;
+import com.spark.ntw.editableprofile.dto.ProfileViewDto;
 import com.spark.ntw.editableprofile.enums.EthinicityEnum;
 import com.spark.ntw.editableprofile.enums.GenderEnum;
 import com.spark.ntw.editableprofile.enums.LocationEnum;
@@ -49,7 +48,7 @@ import com.spark.ntw.editableprofile.service.ProfileService;
 @Controller
 @RequestMapping("/profile-api")
 public class ProfileController {
-    private final Logger log = LoggerFactory.getLogger(ProfileController.class);
+    private final static  Logger log = LoggerFactory.getLogger(ProfileController.class);
 
     /**
      * Service Class.
@@ -93,11 +92,13 @@ public class ProfileController {
             name = "id") final long id, final Model model) {
         // for an existing record.
         if (id > 0) {
-            model.addAttribute("profile", this.getProfile(id));
+            model.addAttribute("profile", this.getProfileDetails(id));
         }
         // for an new record the id will be 0, in which an empty DTO is mapped.
         else {
-            model.addAttribute("profile", new ProfileDto());
+            ProfileDto dto=new ProfileDto();
+            dto.setNewRecord(true);
+            model.addAttribute("profile", dto);
         }
         // populate data for the drop downs and radio buttons.
         this.populateMasterData(model);
@@ -135,13 +136,13 @@ public class ProfileController {
      * @param id
      * @return {@link ProfileDto}
      */
-    private ProfileDto getProfile(long id) {
+    private ProfileDto getProfileDetails(long id) {
         ProfileDto dto = null;
         if (id > 0) {
             dto = this.service.getProfile(id);
         }
         else {
-            throw ApplicationException.getInstance("Incorrect Id.",Optional.empty());
+            throw ApplicationException.getInstance("Incorrect Id.", Optional.empty());
         }
         return dto;
     }
@@ -181,4 +182,23 @@ public class ProfileController {
         return nextView;
     }
 
+    /**
+     * Will fetch the {@link Profile} identified by the id<br/>
+     * transform the {@link Profile} to DTO. <br/>
+     * Include the Dto in the map.<br/>
+     * Navigate to the view screen.
+     * 
+     * @param id
+     *        - id of the profile to be fetched.
+     * @param model
+     *        - the model to be used in the UI.
+     * @return String - the view to be displayed.
+     */
+    @GetMapping("profiles-view/{id}")
+    public String getProfileForView(@PathVariable(
+            name = "id") final long id, final Model model) {
+        ProfileViewDto dto=this.service.getProfileForView(id);
+        model.addAttribute("profile", dto);
+        return "profileView";
+    }
 }

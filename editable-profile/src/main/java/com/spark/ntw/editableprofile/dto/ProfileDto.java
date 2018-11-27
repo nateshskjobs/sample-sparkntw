@@ -1,6 +1,7 @@
 /**
  * 
  */
+
 package com.spark.ntw.editableprofile.dto;
 
 import java.io.Serializable;
@@ -15,18 +16,20 @@ import com.spark.ntw.editableprofile.validation.ProfileValidation;
 import lombok.Data;
 
 /**
+ * DTO for the Profile Screen.
+ * 
  * @author nkurup
  *
- * Nov 21, 2018
+ *         Nov 21, 2018
  */
 @Data
 @ProfileValidation
-public class ProfileDto implements Serializable{
+public class ProfileDto implements Serializable {
     /**
      * Id.
      */
     private long id;
-	/**
+    /**
      * Display Name.
      */
     @NotNull
@@ -35,7 +38,7 @@ public class ProfileDto implements Serializable{
             max = 256)
     @SafeHtml
     private String displayName;
-    
+
     /**
      * Real Name.
      */
@@ -44,13 +47,13 @@ public class ProfileDto implements Serializable{
             max = 256)
     @SafeHtml
     private String realName;
-    
+
     /**
      * Date Of Birth.
      */
     @NotNull
     private String dateOfBirth;
-    
+
     /**
      * Gender.
      */
@@ -72,22 +75,24 @@ public class ProfileDto implements Serializable{
      * Picture.
      */
     private byte[] picture;
-    
+
     /**
      * Maritial Status.
      */
     @NotNull
     private String maritialStatus;
     /**
-     * Occupation
+     * Occupation.
      */
-    @Size(max=256)
+    @Size(
+            max = 256)
     @SafeHtml
     private String occupation;
     /**
      * About Me.
      */
-    @Size(max=5000)
+    @Size(
+            max = 5000)
     @SafeHtml
     private String aboutMe;
     /**
@@ -95,4 +100,9 @@ public class ProfileDto implements Serializable{
      */
     @NotNull
     private String location;
+
+    /**
+     * If true indicates a new Record else an existing Record.
+     */
+    private boolean newRecord;
 }

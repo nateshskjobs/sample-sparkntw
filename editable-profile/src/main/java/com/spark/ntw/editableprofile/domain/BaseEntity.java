@@ -32,7 +32,7 @@ import lombok.Data;
 @Data
 public class BaseEntity implements Serializable {
     @Transient
-    private final Logger LOG=LoggerFactory.getLogger(BaseEntity.class);
+    private final static Logger log=LoggerFactory.getLogger(BaseEntity.class);
     
     /**
      * Primary Key.
@@ -74,21 +74,27 @@ public class BaseEntity implements Serializable {
             name = "modified_date")
     Instant modifiedDate;
     
+    /**
+     * Event Listener triggered before an entity is inserted.
+     */
     @PrePersist
     public void beforeInsert() {
-        LOG.debug("[NK] -> Inside Insert");
+        log.debug("[NK] -> Inside Insert");
         this.createdBy = "dummy";
         this.createdDate = Instant.now();
-        LOG.debug("[NK] -> Inside Insert, set audit data = {} / {} ", this.createdBy,
+        log.debug("[NK] -> Inside Insert, set audit data = {} / {} ", this.createdBy,
                 this.createdDate);
     }
 
+    /**
+     * Event Listener triggered before an entity is updated.
+     */
     @PreUpdate
     public void beforUpdate() {
-        LOG.debug("[NK] -> Inside Update");
+        log.debug("[NK] -> Inside Update");
         this.modifiedBy = "dummy";
         this.modifiedDate = Instant.now();
-        LOG.debug("[NK] -> Inside Update, set audit data = {} / {} ", this.modifiedBy,
+        log.debug("[NK] -> Inside Update, set audit data = {} / {} ", this.modifiedBy,
                 this.modifiedDate);
     }
     

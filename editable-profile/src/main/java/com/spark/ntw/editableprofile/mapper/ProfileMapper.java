@@ -17,6 +17,8 @@ import com.spark.ntw.editableprofile.enums.MaritialStatusEnum;
 import com.spark.ntw.editableprofile.enums.ReligionEnum;
 
 /**
+ * Mapper to transfer data from {@link Profile} and {@link ProfileDto} and vice-versa.
+ * 
  * @author nkurup
  *
  * @created_Date Nov 22, 2018
@@ -57,7 +59,7 @@ public abstract class ProfileMapper {
      * @return
      */
     String toString(final MaritialStatusEnum val) {
-        return (null!=val)?val.name():"";
+        return (null != val) ? val.name() : "";
     }
 
     /**
@@ -65,7 +67,7 @@ public abstract class ProfileMapper {
      * @return
      */
     String toString(final EthinicityEnum val) {
-        return (null!=val)?val.name():"";
+        return (null != val) ? val.name() : "";
     }
 
     /**
@@ -73,7 +75,7 @@ public abstract class ProfileMapper {
      * @return
      */
     String toString(final ReligionEnum val) {
-        return (null!=val)?val.name():"";
+        return (null != val) ? val.name() : "";
     }
 
     /**
@@ -81,7 +83,7 @@ public abstract class ProfileMapper {
      * @return
      */
     String toString(final LocationEnum val) {
-        return (null!=val)?val.name():"";
+        return (null != val) ? val.name() : "";
     }
 
     /**
@@ -108,6 +110,10 @@ public abstract class ProfileMapper {
         return retVal;
     }
 
+    /**
+     * @param val
+     * @return
+     */
     ReligionEnum toReligionEnum(final String val) {
         ReligionEnum retVal = null;
         if (StringUtils.isNotBlank(val)) {

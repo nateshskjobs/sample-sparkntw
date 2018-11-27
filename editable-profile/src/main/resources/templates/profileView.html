@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<script>
+/*<![CDATA[*/
+function cancel()
+{
+	 var theUrl="/profile-api/profiles-list";	
+	location.href=theUrl;
+}
+
+
+/*]]>*/
+</script>
+
+<div>
+	Profile View:
+</div>
+	
+	<table  align="center" width="60%">
+		<!-- Display Name -->
+		<tr>
+			<td width="20%">Display Name</td>
+			<td width="80%">
+			<label th:text="${profile.displayName}"/>
+			</td>
+		</tr>
+
+
+
+		<!-- DOB -->
+		<tr>
+			<td>DOB </td>
+			<td>
+				<label th:text="${profile.dateOfBirth}"/>
+			</td>
+		</tr>
+
+		<!-- Gender -->
+		<tr>
+			<td>Gender </td>
+			<td>
+			<table>
+				<tr>
+					<td>
+						<label th:text="${profile.genderName}"/>
+					</td>
+				</tr>
+				</table>
+				</td>
+		</tr>
+
+		<!-- Ethinicity -->
+		<tr>
+			<td>Ethinicity </td>
+			<td>
+				<label th:text="${profile.ethinicity}"/>
+			</td>
+		</tr>
+
+		<!-- Religion -->
+		<tr>
+			<td>Religion </td>
+			<td>
+				<label th:text="${profile.religion}"/>
+			</td>
+		</tr>
+
+		<!-- Height -->
+		<tr>
+			<td>Height </td>
+			<td>
+				<label th:text="${profile.height}"/>
+			</td>
+		</tr>
+
+		<!-- Picture -->
+		<!-- TODO -->
+
+		
+
+		<!-- About Me -->
+		<tr>
+			<td>About Me </td>
+			<td>
+				<label th:text="${profile.aboutMe}"/>
+			</td>
+		</tr>
+		
+		<!-- location -->
+		<tr>
+			<td>Location </td>
+			<td>
+				<label th:text="${profile.location}"/>
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="3">
+			<input  type="button" th:value="Cancel" onclick="cancel()"/>
+			</td>
+		</tr>
+	</table>
+</html>

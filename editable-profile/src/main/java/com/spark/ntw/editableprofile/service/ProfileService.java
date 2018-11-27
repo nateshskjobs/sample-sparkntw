@@ -9,6 +9,7 @@ import java.util.List;
 import com.spark.ntw.editableprofile.domain.Profile;
 import com.spark.ntw.editableprofile.dto.ListProfileDto;
 import com.spark.ntw.editableprofile.dto.ProfileDto;
+import com.spark.ntw.editableprofile.dto.ProfileViewDto;
 
 /**
  * Service class for Profile. Provides the following functionalites.<br/>
@@ -50,7 +51,17 @@ public interface ProfileService {
     long saveProfile(final ProfileDto profile);
 
     /**
+     * Get a particular {@link Profile} identified by id attribute.<br/>
+     * Transform the {@link Profile} to {@link ProfileViewDto} and return the latter.
+     * 
+     * @param id
+     * @return {@link ProfileDto}
+     */
+    ProfileViewDto getProfileForView(final long id);
+
+    /**
      * Delete an existing {@link Profile} identified by the id.
+     * 
      * @param id
      * @return boolean - true if the {@link Profile} has been sucessfully deleted.
      */

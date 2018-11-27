@@ -19,39 +19,49 @@ function cancel()
 	  <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
 	</ul>
 	<input type="hidden" id="id" th:field="*{id}"/>
-	<table>
+	<table  align="center" width="60%">
 		<!-- Display Name -->
 		<tr>
-			<td>Name =</td>
-			<td><input type="text" name="displayName"
-				th:field="*{displayName}" /></td>
+			<td width="20%">Name </td>
+			<td width="80%">
+				<input type="text" name="displayName" th:field="*{displayName}"  size="100%" maxlength="256"/>
+			</td>
 		</tr>
 
 		<!-- Real Name -->
 		<tr>
-			<td>Name =</td>
-			<td><input type="text" name="realName"
-				th:field="*{realName}" /></td>
+			<td>Real Name </td>
+			<td>
+				<input type="text" name="realName" 	th:field="*{realName}"  size="100%" maxlength="256"/>
+			</td>
 		</tr>
 
 		<!-- DOB -->
 		<tr>
-			<td>DOB =</td>
-			<td><input type="text" name="dateOfBirth"
-				th:field="*{dateOfBirth}" /></td>
+			<td>DOB (dd/MM/yyyy)</td>
+			<td>
+				<input type="text" name="dateOfBirth" 	th:field="*{dateOfBirth}" size="30%" maxlength="10" />
+			</td>
 		</tr>
 
 		<!-- Gender -->
 		<tr>
-			<td>Gender =</td>
-			<td th:each="row: ${genderValues}"><input type="radio"
-				th:field="*{gender}" th:value="${row.key}" name="gender" />
-				<label th:for="${#ids.prev('gender')}" th:text="${row.value}" /></td>
+			<td>Gender </td>
+			<td>
+				<table>
+					<tr>
+						<td th:each="row: ${genderValues}">
+							<input type="radio"  th:field="*{gender}" th:value="${row.key}" name="gender" />
+							<label th:for="${#ids.prev('gender')}" th:text="${row.value}" />
+						</td>
+					</tr>
+				</table>
+			</td>
 		</tr>
 
 		<!-- Ethinicity -->
 		<tr>
-			<td>Ethinicity =</td>
+			<td>Ethinicity </td>
 			<td>
 				<select id="ethinicity" name="ethinicity" th:field="*{ethinicity}">
 					<option th:each="row : ${ethinicities}" th:value="${row}"  th:text="${row}"></option>
@@ -61,7 +71,7 @@ function cancel()
 
 		<!-- Religion -->
 		<tr>
-			<td>Religion =</td>
+			<td>Religion </td>
 			<td>
 				<select id="religion" name="religion" th:field="*{religion}">
 					<option th:each="row : ${religions}" th:value="${row}"  th:text="${row}"></option>
@@ -71,9 +81,15 @@ function cancel()
 
 		<!-- Height -->
 		<tr>
-			<td>Height =</td>
-			<td><input type="text" name="height"
-				th:field="*{height}" /></td>
+			<td>Height </td>
+			<td>
+				<div th:if="*{newRecord}">
+					<input type="text" name="height" 	th:field="*{height}" />
+				</div>
+				<div th:unless="*{newRecord}">
+					<lable th:text="${height}"/>
+				</div>
+				</td>
 		</tr>
 
 		<!-- Picture -->
@@ -81,30 +97,29 @@ function cancel()
 
 		<!-- Maritial Status -->
 		<tr>
-		<td>Maritial Status</td>
-		<td>
-		<select id="maritialStatus" name="maritialStatus" th:field="*{maritialStatus}">
-			<option th:each="row : ${maritialStatuses}" th:value="${row}"  th:text="${row}"></option>
-		</select>
-		</td>
+			<td>Maritial Status</td>
+			<td>
+				<select id="maritialStatus" name="maritialStatus" th:field="*{maritialStatus}">
+					<option th:each="row : ${maritialStatuses}" th:value="${row}"  th:text="${row}"></option>
+				</select>
+			</td>
 		</tr>
 		<!-- Occupation. -->
 		<tr>
-			<td>Occupation =</td>
-			<td><input type="text" name="occupation"
-				th:field="*{occupation}" /></td>
+			<td>Occupation </td>
+			<td>
+				<input type="text" name="occupation"  th:field="*{occupation}"  size="100%" maxlength="256"/></td>
 		</tr>
 
 		<!-- About Me -->
 		<tr>
-			<td>About Me =</td>
-			<td><input type="text" name="aboutMe"
-				th:field="*{aboutMe}" /></td>
+			<td>About Me </td>
+			<td><textarea name="aboutMe"  th:field="*{aboutMe}" cols="70" rows="5" maxlength="5000"/></td>
 		</tr>
 		
 		<!-- location -->
 		<tr>
-			<td>Location =</td>
+			<td>Location </td>
 			<td>
 				<select id="location" name="location" th:field="*{location}">
 					<option th:each="row : ${locations}" th:value="${row}"  th:text="${row}"></option>
@@ -113,9 +128,11 @@ function cancel()
 		</tr>
 		
 		<tr>
-			<td colspan="2">
-			<input  type="submit" th:value="Submit"/>
-			<input  type="button" th:value="Cancel" onclick="cancel()"/>
+			<td colspan="3">
+			<div align="center">
+				<input  type="submit" th:value="Submit"/>
+				<input  type="button" th:value="Cancel" onclick="cancel()"/>
+			</div>
 			</td>
 		</tr>
 	</table>

@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
@@ -33,11 +32,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.spark.ntw.editableprofile.domain.Profile;
 import com.spark.ntw.editableprofile.dto.ListProfileDto;
 import com.spark.ntw.editableprofile.dto.ProfileDto;
-import com.spark.ntw.editableprofile.enums.EthinicityEnum;
-import com.spark.ntw.editableprofile.enums.LocationEnum;
-import com.spark.ntw.editableprofile.enums.MaritialStatusEnum;
-import com.spark.ntw.editableprofile.enums.ReligionEnum;
-import com.spark.ntw.editableprofile.mapper.ProfileMapper;
+import com.spark.ntw.editableprofile.dto.ProfileViewDto;
 import com.spark.ntw.editableprofile.repository.ProfileRepository;
 import com.spark.ntw.editableprofile.service.impl.ProfileServiceImpl;
 
@@ -55,9 +50,6 @@ public class ProfileServiceTest {
     @Mock
     ProfileRepository profileRepo;
 
-    @Mock
-    ProfileMapper profileMapper;
-
     private static Validator validator;
 
     /**
@@ -74,7 +66,6 @@ public class ProfileServiceTest {
         MockitoAnnotations.initMocks(this);
         profileService = new ProfileServiceImpl();
         Whitebox.setInternalState(profileService, "repo", profileRepo);
-        Whitebox.setInternalState(profileService, "mapper", profileMapper);
     }
 
     @After
@@ -155,5 +146,14 @@ public class ProfileServiceTest {
         dto.setMaritialStatus(null);
         Set<ConstraintViolation<ProfileDto>> exceptions=validator.validate(dto);
         assertNotEquals(null, exceptions);
+    }
+    
+    @Test
+    public void testGetProfileForView(){
+        final long id = 102L;
+        Mockito.when(profileRepo.findOne(id)).thenReturn(this.createProfile(id));
+        final ProfileViewDto dto = profileService.getProfileForView(id);
+        assertNotEquals(null, dto);
+        
     }
 }

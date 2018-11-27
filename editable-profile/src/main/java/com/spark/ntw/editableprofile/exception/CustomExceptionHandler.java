@@ -27,7 +27,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  */
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
-    private final Logger log = LoggerFactory.getLogger(CustomExceptionHandler.class);
+    private final static Logger log = LoggerFactory.getLogger(CustomExceptionHandler.class);
 
     /**
      * Handler for any exception thrown from the application. <br/>

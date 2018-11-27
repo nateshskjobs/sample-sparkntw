@@ -20,6 +20,16 @@ function update(){
 	}
 }
 
+function view(){
+	var id=getSelectedRecord();
+	if (id>0) {
+		  var theUrl="/profile-api/profiles-view/"+id;	
+			location.href=theUrl;
+	}
+	else{
+		alert("Please select a record to edit");
+	}
+}
 function getSelectedRecord(){
 	var ids = document.getElementsByName('id');
 	var selectedId=0;
@@ -35,15 +45,16 @@ function getSelectedRecord(){
 /*]]>*/
 </script>
 
+
 Welcome to Profiles page
 
-<table border="1">
+<table border="1" align="center" width="50%">
 	<tbody>
 		<tr>
 			<td />
-			<td>Name</td>
-			<td>Gender</td>
-			<td>DOB</td>
+			<td width="70%">Name</td>
+			<td width="10%">Gender</td>
+			<td width="20%">DOB</td>
 		</tr>
 		<tr th:each="profile: ${profiles}">
 			<!-- Selection Radio button -->
@@ -60,13 +71,13 @@ Welcome to Profiles page
 		</tr>
 
 		<!-- Buttons -->
-		<td colspan="2">
+		<td colspan="4">
 			<!-- New --> 
 			<input type="submit" name="new" th:value="NEW" 	onclick="addNew()" /> 
 			<!-- Update --> 
-			<input type="submit" 	name="modify" th:value="Modify"  onclick="update()"/> 
+			<input type="submit" 	name="modify" th:value="MODIFY"  onclick="update()"/> 
 			<!--  View -->
-			 <input 	type="submit" name="view" th:value="VIEW" />
+			 <input 	type="submit" name="view" th:value="VIEW" onclick="view()"/>
 		</td>
 	</tbody>
 </table>

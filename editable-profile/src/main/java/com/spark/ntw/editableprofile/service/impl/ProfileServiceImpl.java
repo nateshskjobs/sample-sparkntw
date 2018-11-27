@@ -19,7 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spark.ntw.editableprofile.domain.Profile;
 import com.spark.ntw.editableprofile.dto.ListProfileDto;
 import com.spark.ntw.editableprofile.dto.ProfileDto;
+import com.spark.ntw.editableprofile.dto.ProfileViewDto;
+import com.spark.ntw.editableprofile.enums.GenderEnum;
 import com.spark.ntw.editableprofile.mapper.ProfileMapper;
+import com.spark.ntw.editableprofile.mapper.ProfileViewMapper;
 import com.spark.ntw.editableprofile.repository.ProfileRepository;
 import com.spark.ntw.editableprofile.service.ProfileService;
 
@@ -29,11 +32,9 @@ import com.spark.ntw.editableprofile.service.ProfileService;
  */
 @Service
 public class ProfileServiceImpl implements ProfileService {
-    final Logger log = LoggerFactory.getLogger(ProfileServiceImpl.class);
+    final static Logger log = LoggerFactory.getLogger(ProfileServiceImpl.class);
     @Autowired
     ProfileRepository repo;
-
-    ProfileMapper mapper;
 
     /*
      * (non-Javadoc)
@@ -76,7 +77,9 @@ public class ProfileServiceImpl implements ProfileService {
     public ProfileDto getProfile(long id) {
         final Profile profile = this.repo.findOne(id);
         final ProfileMapper mapper = Mappers.getMapper(ProfileMapper.class);
-        return mapper.toDto(profile);
+        final ProfileDto dto = mapper.toDto(profile);
+        dto.setNewRecord(false);
+        return dto;
     }
 
     /*
@@ -105,6 +108,25 @@ public class ProfileServiceImpl implements ProfileService {
     public boolean removeProfile(long id) {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.spark.ntw.editableprofile.service.ProfileService#getProfileForView(long)
+     */
+    @Override
+    public ProfileViewDto getProfileForView(long id) {
+        final Profile profile = this.repo.findOne(id);
+        final ProfileViewMapper mapper = Mappers.getMapper(ProfileViewMapper.class);
+        final ProfileViewDto dto = mapper.toDto(profile);
+        if(dto.getGender()!=' '){
+            GenderEnum val=GenderEnum.fromType(dto.getGender());
+            if(null!=val){
+                dto.setGenderName(val.name());
+            }
+        }
+        return dto;
     }
 
 }

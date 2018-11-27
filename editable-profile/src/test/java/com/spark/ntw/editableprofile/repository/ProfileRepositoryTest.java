@@ -42,6 +42,9 @@ public class ProfileRepositoryTest {
     
     private Profile profile;
     
+    /**
+     * Initialization.
+     */
     @Before
     public void init() {
         profile=this.createInstance();

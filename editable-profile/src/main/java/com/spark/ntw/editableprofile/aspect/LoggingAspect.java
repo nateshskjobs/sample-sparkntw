@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Aspect
 public class LoggingAspect {
-    private final Logger log = LoggerFactory.getLogger(LoggingAspect.class);
+    private static final Logger log = LoggerFactory.getLogger(LoggingAspect.class);
 
     /**
      * Pointcut that matches all Spring beans in the application's main packages.
