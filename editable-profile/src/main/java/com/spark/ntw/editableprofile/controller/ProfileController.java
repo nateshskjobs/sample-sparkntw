@@ -4,9 +4,11 @@
 
 package com.spark.ntw.editableprofile.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -25,13 +27,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.spark.ntw.editableprofile.dto.ListProfileDto;
 import com.spark.ntw.editableprofile.dto.ProfileDto;
+import com.spark.ntw.editableprofile.enums.EthinicityEnum;
 import com.spark.ntw.editableprofile.enums.GenderEnum;
+import com.spark.ntw.editableprofile.enums.LocationEnum;
+import com.spark.ntw.editableprofile.enums.MaritialStatusEnum;
+import com.spark.ntw.editableprofile.enums.ReligionEnum;
+import com.spark.ntw.editableprofile.exception.ApplicationException;
 import com.spark.ntw.editableprofile.service.ProfileService;
 
 /**
- * Controller class for Profile.
- * <p/>
- * Includes methods supporting GET and POST methods.
+ * Controller class for Profile. Functionalities provided include <br/>
+ * <li>Getting all the profiles.</li>
+ * <li>Get a particular profile.</li>
+ * <li>Save and update a profile.</li>
  * 
  * @author Natesh Kurup
  *         <p/>
@@ -47,28 +55,20 @@ public class ProfileController {
      * Service Class.
      */
     @Autowired
-    ProfileService service;
-
-    /**
-     * Map containing key value pair of type and name.
-     */
-    final Map<Character, String> genderMap = new HashMap<>();
+    private ProfileService service;
 
     /**
      * Default Constructor.
      */
     public ProfileController() {
-        // populate the genderMap.
-        for (GenderEnum g : GenderEnum.values()) {
-            genderMap.put(g.getType(), g.name());
-        }
     }
 
     /**
-     * Get all the existing profiles.
+     * Get all the existing profiles and include it in the Model.
      * 
      * @param model
-     * @return
+     *        - the model to be used in the view.
+     * @return String - the listing page which is the view.
      */
     @GetMapping("/profiles-list")
     public String getAllProfiles(Model model) {
@@ -77,16 +77,20 @@ public class ProfileController {
     }
 
     /**
-     * Get the profile identified by the 'id' parameter.
+     * Get the profile identified by the 'id' parameter. <br/>
+     * If the id is zero then assume a new record to be created and display an empty scree.<br/>
+     * If id is non zero then assume an update and fetch the record, populate the model to be
+     * displayed on the UI.<br/>
      * 
      * @param id
+     *        - the profile to be fetched.
      * @param model
-     * @return
+     *        - the model to be used in the UI.
+     * @return String - the profile view.
      */
     @GetMapping("/profiles/{id}")
     public String getProfile(@PathVariable(
             name = "id") final long id, final Model model) {
-        int j=1/0;
         // for an existing record.
         if (id > 0) {
             model.addAttribute("profile", this.getProfile(id));
@@ -95,20 +99,51 @@ public class ProfileController {
         else {
             model.addAttribute("profile", new ProfileDto());
         }
-
-        // include genderMap.
-        model.addAttribute("genderValues", genderMap);
+        // populate data for the drop downs and radio buttons.
+        this.populateMasterData(model);
         return "profile";
     }
 
     /**
-     * Get the Profile details.
+     * Get the data for the drop-downs and radio buttons on the UI.<br/>
+     * Include the data in the model to be consumed by the UI.<br/>
+     * <p/>
+     * 
+     * <pre>
+     * NOTE: Instead of calling REST endpoints for getting the data using Enums to provide the data.
+     * </pre>
+     * 
+     * @param model
+     *        - the model which needs to be populated.
+     */
+    private void populateMasterData(final Model model) {
+        // include genderMap.
+        model.addAttribute("genderValues", GenderEnum.getAllValues());
+        // include maritial Status.
+        model.addAttribute("maritialStatuses", MaritialStatusEnum.getAllValues());
+        // populate etinicities.
+        model.addAttribute("ethinicities", EthinicityEnum.getAllValues());
+        // populate the religions.
+        model.addAttribute("religions", ReligionEnum.getAllValues());
+        // populate the locations.
+        model.addAttribute("locations", LocationEnum.getAllValues());
+    }
+
+    /**
+     * Get the Profile details for the given id. If the id is incorrect then throw an exception.
      * 
      * @param id
      * @return {@link ProfileDto}
      */
     private ProfileDto getProfile(long id) {
-        return this.service.getProfile(id);
+        ProfileDto dto = null;
+        if (id > 0) {
+            dto = this.service.getProfile(id);
+        }
+        else {
+            throw ApplicationException.getInstance("Incorrect Id.",Optional.empty());
+        }
+        return dto;
     }
 
     /**
@@ -131,17 +166,19 @@ public class ProfileController {
     @PostMapping(
             value = "/profiles",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String saveProfile(@Valid @ModelAttribute("profile") final ProfileDto profile, final BindingResult result,final Model model) {
-        String nextView="";
-        if(result.hasErrors()){
-            nextView="profile";
+    public String saveProfile(@Valid @ModelAttribute("profile") final ProfileDto profile,
+            final BindingResult result, final Model model) {
+        String nextView = "";
+        if (result.hasErrors()) {
+            this.populateMasterData(model);
+            nextView = "profile";
         }
-        else{
+        else {
             service.saveProfile(profile);
-            nextView=this.getAllProfiles(model);
+            nextView = this.getAllProfiles(model);
         }
-        
-        return  nextView;
+
+        return nextView;
     }
 
 }

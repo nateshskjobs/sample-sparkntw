@@ -52,15 +52,21 @@ function cancel()
 		<!-- Ethinicity -->
 		<tr>
 			<td>Ethinicity =</td>
-			<td><input type="text" name="ethinicity"
-				th:field="*{ethinicity}" /></td>
+			<td>
+				<select id="ethinicity" name="ethinicity" th:field="*{ethinicity}">
+					<option th:each="row : ${ethinicities}" th:value="${row}"  th:text="${row}"></option>
+				</select>
+			</td>
 		</tr>
 
 		<!-- Religion -->
 		<tr>
 			<td>Religion =</td>
-			<td><input type="text" name="religion"
-				th:field="*{religion}" /></td>
+			<td>
+				<select id="religion" name="religion" th:field="*{religion}">
+					<option th:each="row : ${religions}" th:value="${row}"  th:text="${row}"></option>
+				</select>
+			</td>
 		</tr>
 
 		<!-- Height -->
@@ -73,6 +79,15 @@ function cancel()
 		<!-- Picture -->
 		<!-- TODO -->
 
+		<!-- Maritial Status -->
+		<tr>
+		<td>Maritial Status</td>
+		<td>
+		<select id="maritialStatus" name="maritialStatus" th:field="*{maritialStatus}">
+			<option th:each="row : ${maritialStatuses}" th:value="${row}"  th:text="${row}"></option>
+		</select>
+		</td>
+		</tr>
 		<!-- Occupation. -->
 		<tr>
 			<td>Occupation =</td>
@@ -90,8 +105,11 @@ function cancel()
 		<!-- location -->
 		<tr>
 			<td>Location =</td>
-			<td><input type="text" name="location"
-				th:field="*{location}" /></td>
+			<td>
+				<select id="location" name="location" th:field="*{location}">
+					<option th:each="row : ${locations}" th:value="${row}"  th:text="${row}"></option>
+				</select>	
+			</td>
 		</tr>
 		
 		<tr>

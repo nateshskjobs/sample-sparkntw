@@ -44,9 +44,10 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional(
             readOnly = true)
     public List<ListProfileDto> getAllProfiles() {
+        // get all the profiles.
         final List<Profile> profiles = repo.findAll();
-        List<ProfileDto> profileDtos = new ArrayList<>();
         List<ListProfileDto> listProfileDtos = new ArrayList<>();
+        // transform each Profile to ListProfile.
         if (CollectionUtils.isNotEmpty(profiles)) {
             listProfileDtos = profiles.stream().map(p -> {
                 final ListProfileDto dto = new ListProfileDto();
@@ -54,7 +55,9 @@ public class ProfileServiceImpl implements ProfileService {
                 dto.setDisplayName(p.getDisplayName());
                 dto.setGender(p.getGender());
                 dto.setId(p.getId());
-                dto.setLocation(p.getLocation());
+                if (null != p.getLocation()) {
+                    dto.setLocation(p.getLocation().name());
+                }
                 dto.setUrl("");
                 return dto;
             }).collect(Collectors.toList());
@@ -71,8 +74,8 @@ public class ProfileServiceImpl implements ProfileService {
     @Transactional(
             readOnly = true)
     public ProfileDto getProfile(long id) {
-        final Profile profile= this.repo.findOne(id);
-        final ProfileMapper mapper=Mappers.getMapper(ProfileMapper.class);
+        final Profile profile = this.repo.findOne(id);
+        final ProfileMapper mapper = Mappers.getMapper(ProfileMapper.class);
         return mapper.toDto(profile);
     }
 
@@ -87,7 +90,7 @@ public class ProfileServiceImpl implements ProfileService {
     public long saveProfile(ProfileDto dto) {
         final ProfileMapper mapper = Mappers.getMapper(ProfileMapper.class);
         Profile profile = mapper.toEntity(dto);
-        profile=repo.save(profile);
+        profile = repo.save(profile);
         log.debug("Saved Record !!!!");
         return profile.getId();
     }

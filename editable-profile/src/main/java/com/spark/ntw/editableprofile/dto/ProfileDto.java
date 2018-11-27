@@ -4,7 +4,11 @@
 package com.spark.ntw.editableprofile.dto;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.SafeHtml;
 
 import com.spark.ntw.editableprofile.validation.ProfileValidation;
 
@@ -25,19 +29,32 @@ public class ProfileDto implements Serializable{
 	/**
      * Display Name.
      */
+    @NotNull
+    @Size(
+            min = 1,
+            max = 256)
+    @SafeHtml
     private String displayName;
     
     /**
      * Real Name.
      */
+    @Size(
+            min = 1,
+            max = 256)
+    @SafeHtml
     private String realName;
+    
     /**
      * Date Of Birth.
      */
-    private LocalDate dateOfBirth;
+    @NotNull
+    private String dateOfBirth;
+    
     /**
      * Gender.
      */
+    @NotNull
     private char gender;
     /**
      * Ethinicity.
@@ -57,15 +74,25 @@ public class ProfileDto implements Serializable{
     private byte[] picture;
     
     /**
+     * Maritial Status.
+     */
+    @NotNull
+    private String maritialStatus;
+    /**
      * Occupation
      */
+    @Size(max=256)
+    @SafeHtml
     private String occupation;
     /**
      * About Me.
      */
+    @Size(max=5000)
+    @SafeHtml
     private String aboutMe;
     /**
      * Location.
      */
+    @NotNull
     private String location;
 }

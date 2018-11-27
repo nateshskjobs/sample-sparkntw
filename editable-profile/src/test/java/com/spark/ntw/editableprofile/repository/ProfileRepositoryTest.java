@@ -8,6 +8,8 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.time.LocalDate;
 
+import javax.validation.ConstraintViolationException;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +20,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.spark.ntw.editableprofile.domain.Profile;
+import com.spark.ntw.editableprofile.enums.EthinicityEnum;
+import com.spark.ntw.editableprofile.enums.LocationEnum;
+import com.spark.ntw.editableprofile.enums.MaritialStatusEnum;
+import com.spark.ntw.editableprofile.enums.ReligionEnum;
 
 /**
  * @author Natesh Kurup
@@ -51,6 +57,15 @@ public class ProfileRepositoryTest {
         profile.setDisplayName("Dummy User");
         profile.setDateOfBirth(LocalDate.now());
         profile.setGender('M');
+        profile.setAboutMe("Test Data");
+        profile.setEthinicity(EthinicityEnum.ASIAN);
+        profile.setId(0L);
+        profile.setLocation(LocationEnum.MUMBAI);
+        profile.setMaritialStatus(MaritialStatusEnum.SINGLE);
+        profile.setOccupation("MISC");
+        profile.setRealName("Dummy Real Name");
+        profile.setReligion(ReligionEnum.HINDU);
+        
         return profile;
     }
     
@@ -74,9 +89,12 @@ public class ProfileRepositoryTest {
         assertNotEquals(profile.getId(), null);
     }
     
-    @Test
-    public void testInvlaidSave(){
-        assertEquals(1, 2);
-        //TODO:
+    @Test(expected=ConstraintViolationException.class)
+    public void testInvlaidSaveForNullValue(){
+        final Profile profile=this.createInstance();
+        profile.setDisplayName(null);
+        profile.setDateOfBirth(null);
+        repo.save(profile);
     }
+
 }

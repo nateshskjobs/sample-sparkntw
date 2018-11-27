@@ -32,33 +32,25 @@ public class LoggingAspect {
     /**
      * Pointcut that matches all Spring beans in the application's main packages.
      */
-    @Pointcut("within(com.spark.ntw.editableprofile.controller..*)"
-            + " || within(com.spark.ntw.editableprofile.service..*)"
-            + "|| within(com.spark.ntw.editableprofile.repository..*)")
+    @Pointcut("execution(* com.spark.ntw.editableprofile.controller..*(..))"
+            + " || execution(* com.spark.ntw.editableprofile.service..*(..))"
+            + "|| execution(* com.spark.ntw.editableprofile.repository..*(..))"
+            + "|| execution(* com.spark.ntw.editableprofile.validation..*(..))")
     public void applicationPointCut() {
         // No implementation
     }
 
     /**
-     * Pointcut that matches all Spring beans in the application's main packages.
-     */
-    @Pointcut("execution(* com.spark.ntw.editableprofile.controller..*(..))"
-            + " || execution(* com.spark.ntw.editableprofile.service..*(..))"
-            + "|| execution(* com.spark.ntw.editableprofile.repository..*(..))"
-            + "|| execution(* com.spark.ntw.editableprofile.validation..*(..))"
-            )
-    public void applicationPointCutNew() {
-        // No implementation
-    }
-    /**
-     * Around Aspect for logging.
+     * Around Aspect which is used for the following
+     * <li>logging.</li>
      * 
      * @param joinPoint
      * @return
      * @throws Throwable
      */
-    @Around("applicationPointCutNew()")
+    @Around("applicationPointCut()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
+        //TODO: include timing the method responses selectively.
         if (log.isDebugEnabled()) {
             log.debug("Enter: {}.{}() with argument[s] = {}",
                     joinPoint.getSignature().getDeclaringTypeName(),

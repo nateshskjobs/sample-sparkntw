@@ -7,6 +7,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.util.HtmlUtils;
 
 import com.spark.ntw.editableprofile.dto.ProfileDto;
 import com.spark.ntw.editableprofile.validation.ProfileValidation;
@@ -38,6 +39,7 @@ public class ProfileValidator implements ConstraintValidator<ProfileValidation, 
             flag=false;
             ctx.buildConstraintViolationWithTemplate("Incorrect Date Of Birth").addConstraintViolation();
         }
+       
         return flag;
     }
 
